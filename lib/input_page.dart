@@ -1,8 +1,11 @@
+import 'package:bmi_calculator/result_pagte.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'icon_content.dart';
 import 'reusable_card.dart';
 import 'constants.dart';
+import 'Buttombotton.dart';
+import 'calculator_brain.dart';
 
 enum Gender {
   male,
@@ -62,11 +65,14 @@ class _InputPageState extends State<InputPage> {
                     ),
                     onPress: () {
                       setState(() {
-                        selectedGender = Gender.female;
+                        selectedGender = Gender.male;
                       });
-                    },
+                      print('object');
+                      
+                      },
                   ),
-                ),
+                  ),
+                
                 Expanded(
                   child: ReusableCard(
                     a: selectedGender == Gender.female
@@ -92,7 +98,7 @@ class _InputPageState extends State<InputPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'HEIGHT',
+                    'ALTURA',
                     style: kLabeltextStyle,
                   ),
                   Row(
@@ -146,7 +152,7 @@ class _InputPageState extends State<InputPage> {
                     cardChild: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('WEIGHT', style: kLabeltextStyle),
+                        Text('PESO', style: kLabeltextStyle),
                         Text('$weight', style: kNumbertextStyle),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -189,7 +195,7 @@ class _InputPageState extends State<InputPage> {
                     cardChild: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('AGE', style: kLabeltextStyle),
+                        Text('EDAD', style: kLabeltextStyle),
                         Text('$age', style: kNumbertextStyle),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -229,12 +235,22 @@ class _InputPageState extends State<InputPage> {
               ],
             ),
           ),
-          Container(
-            color: kBottomContainerColour,
-            margin: EdgeInsets.only(top: 10),
-            width: double.infinity,
-            height: kBottomContainerHeight,
-          )
+          BottomButton(
+              onTap: () {
+                CalculatorBrain calc =
+                    CalculatorBrain(height: height, weight: weight);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context)=>ResultsPage(
+                      bmiResult: calc.calculateBMI(),
+                      resultText: calc.getResult(),
+                      interpretation: calc.getInterpretation(),
+                    ),
+                  ),
+                );
+              },
+              buttonTitle: 'CALCULAR')
         ],
       ),
     );
